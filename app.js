@@ -1,7 +1,16 @@
 const express = require('express');
 const { notFoundError, errorHandler } = require('./utils/error-handling');
 const { AllRouters } = require('./router/index.routes');
+const { default: mongoose } = require('mongoose');
 const app = express();
+
+mongoose.connect('mongodb://localhost:27017/auth-simple-project', {}).then(() => {
+    console.log('Connected to MongoDB');
+})
+    .catch(err => {
+        console.error('Error connecting to MongoDB', err);
+    });
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
