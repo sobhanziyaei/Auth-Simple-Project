@@ -7,7 +7,7 @@ notFoundError = (req, res, next) => {
 
 errorHandler = (err, req, res, next) => {
     const status = err?.status ?? err?.statusCode ?? 500;
-    res.send({
+    res.status(status).send({
         statusCode: status,
         message: err?.message || "InternalServerError"
     })

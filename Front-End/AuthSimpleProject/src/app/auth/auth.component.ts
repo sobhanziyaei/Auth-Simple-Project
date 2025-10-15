@@ -6,11 +6,7 @@ import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-auth',
   standalone: true,
-  imports: [CommonModule, FormsModule, 
-// TODO: `HttpClientModule` should not be imported into a component directly.
-// Please refactor the code to add `provideHttpClient()` call to the provider list in the
-// application bootstrap logic and remove the `HttpClientModule` import from this component.
-HttpClientModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss']
 })
@@ -53,9 +49,12 @@ export class AuthComponent {
       return;
     }
 
+    console.log('Attempting login with:', this.loginData);
+
     this.http.post('http://localhost:3000/auth/login', this.loginData)
       .subscribe({
         next: (response: any) => {
+          console.log('Login response:', response);
           this.successMessage = 'ورود با موفقیت انجام شد!';
           console.log('Login successful:', response);
           localStorage.setItem('token', response.token);
@@ -63,6 +62,7 @@ export class AuthComponent {
           // You can redirect user here
         },
         error: (error) => {
+          console.log('Login error:', error);
           this.errorMessage = error.error?.message || 'خطا در ورود به سیستم';
           this.isLoading = false;
         }
